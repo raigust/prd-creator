@@ -1,0 +1,6 @@
+{
+  "name": "PRD Studio — AI-Ready PRD Generator",
+  "description": "Alat gratis untuk menyusun Product Requirements Document (PRD) terstruktur, lengkap, dan siap digunakan oleh AI coding agent seperti Claude Code, Cursor, dan Windsurf.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

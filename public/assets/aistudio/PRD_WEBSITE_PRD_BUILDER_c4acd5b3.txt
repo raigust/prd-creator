@@ -1,0 +1,2035 @@
+# PRODUCT REQUIREMENTS DOCUMENT (PRD)
+# PRD Studio — AI-Ready PRD Generator
+
+**Document Version:** 1.0.0  
+**Status:** Initial Specification  
+**Product Type:** Web Application  
+**Target Audience:** Developers, Students, Founders, Product Managers, Non-Technical Users  
+**Primary Language:** Indonesian  
+**Output Language:** Indonesian or English  
+**Primary Output Format:** Markdown (.md)  
+**Document Purpose:** Product specification and implementation reference for AI coding agents
+
+---
+
+# 1. PRODUCT OVERVIEW
+
+## 1.1 Product Summary
+
+PRD Studio adalah web application yang membantu pengguna mengubah ide produk menjadi Product Requirements Document (PRD) yang terstruktur, detail, konsisten, dan siap digunakan sebagai instruksi untuk AI coding agent.
+
+Pengguna tidak perlu menulis seluruh spesifikasi secara manual. Aplikasi menyediakan pilihan terstruktur, checklist, konfigurasi, preset, dan input opsional untuk membantu pengguna mendefinisikan kebutuhan produknya.
+
+Sistem mengubah seluruh pilihan tersebut menjadi dokumen PRD yang mencakup kebutuhan produk, fitur, user flow, UI/UX, business rules, technical specification, security, testing, acceptance criteria, serta instruksi implementasi untuk AI agent.
+
+Prinsip utama produk:
+
+"Describe less. Specify better. Build with clarity."
+
+## 1.2 Problem Statement
+
+Banyak pengguna memiliki ide untuk membuat website atau aplikasi, tetapi kesulitan menerjemahkannya menjadi spesifikasi teknis yang jelas.
+
+Masalah yang ingin diselesaikan:
+
+1. Pengguna tidak tahu struktur PRD yang baik.
+2. Pengguna harus menulis terlalu banyak teks secara manual.
+3. Prompt sederhana sering menghasilkan implementasi yang tidak sesuai harapan.
+4. Pengguna awam tidak memahami istilah seperti authentication, authorization, API, database relationships, dan acceptance criteria.
+5. Spesifikasi sering melupakan error states, validasi, keamanan, responsive design, dan aturan bisnis.
+6. AI coding agent dapat membuat asumsi sendiri ketika kebutuhan tidak dijelaskan secara spesifik.
+7. Dokumen hasil brainstorming sering tidak konsisten atau sulit langsung digunakan untuk implementasi.
+8. Pengguna kesulitan membedakan fitur wajib, fitur tambahan, dan fitur yang tidak termasuk dalam scope.
+
+## 1.3 Product Vision
+
+Menjadi alat yang memungkinkan siapa pun menyusun spesifikasi produk digital berkualitas melalui pilihan terstruktur, tanpa harus memiliki kemampuan menulis dokumen teknis atau pengalaman sebagai product manager.
+
+## 1.4 Product Goals
+
+- Mempercepat proses penyusunan PRD.
+- Membantu pengguna mendefinisikan kebutuhan produk secara sistematis.
+- Menyediakan pilihan yang mendetail untuk berbagai jenis proyek digital.
+- Menghasilkan dokumen yang dapat dipahami berbagai AI coding agent.
+- Mengurangi asumsi yang tidak diinginkan selama implementasi.
+- Menyediakan preview dan pengeditan sebelum dokumen digunakan.
+- Mendukung proyek sederhana hingga aplikasi kompleks.
+
+## 1.5 Target Users
+
+### Primary Users
+
+**Beginner / Student**
+- Memiliki ide proyek tetapi belum memahami PRD.
+- Membutuhkan panduan langkah demi langkah.
+- Menginginkan pilihan yang mudah dipahami.
+- Membutuhkan dokumen yang siap diserahkan kepada AI.
+
+**Developer / AI-Assisted Builder**
+- Menggunakan coding agent untuk membangun aplikasi.
+- Membutuhkan requirement yang konsisten dan terstruktur.
+- Ingin mengurangi prompt manual dan revisi berulang.
+
+**Founder / Product Owner**
+- Ingin mendefinisikan kebutuhan produk sebelum pengembangan.
+- Membutuhkan scope, prioritas, dan kriteria keberhasilan yang jelas.
+
+**Product Manager / Technical Lead**
+- Membutuhkan struktur spesifikasi yang konsisten.
+- Ingin mendefinisikan business rules, architecture, integrations, dan acceptance criteria secara terperinci.
+
+## 1.6 Success Metrics
+
+Target berikut merupakan sasaran awal yang perlu divalidasi melalui pengujian pengguna.
+
+| Metric | Initial Target |
+|---|---|
+| Pengguna berhasil menghasilkan PRD | Minimal 80% pengguna yang memulai wizard |
+| Waktu untuk menghasilkan PRD pertama | Median maksimal 15 menit untuk proyek umum |
+| Dokumen berhasil disalin | Minimal 90% percobaan copy |
+| Kelengkapan requirement wajib | 100% bagian wajib sesuai scope yang dipilih |
+| Pengujian usability | Pengguna memahami langkah berikutnya tanpa bantuan langsung |
+| Kualitas output | Tidak ada requirement wajib yang hilang atau bertentangan secara otomatis |
+
+## 1.7 Product Scope
+
+### In Scope — MVP
+
+- Landing page.
+- Guided project creation wizard.
+- Project type selection.
+- Detailed feature and requirement selection.
+- Conditional forms berdasarkan pilihan pengguna.
+- Preset dan template konfigurasi.
+- Project overview and scope configuration.
+- User roles and permissions configuration.
+- Feature requirements and business rules.
+- Page and route planning.
+- User flows.
+- UI/UX and design system configuration.
+- Technical stack configuration.
+- Database and API requirement configuration.
+- Security and non-functional requirements.
+- Testing and acceptance criteria configuration.
+- AI agent implementation instruction configuration.
+- Live PRD preview.
+- Manual editing of generated document.
+- Copy to clipboard.
+- Download Markdown file.
+- Reset and edit project configuration.
+- Autosave draft locally.
+- Responsive interface.
+- Requirement validation and conflict warnings.
+
+### Out of Scope — MVP
+
+- Automatic deployment of generated applications.
+- Direct execution of generated PRD inside external coding agents.
+- Automatic creation of Git repositories.
+- Built-in collaborative real-time editing.
+- Team management and enterprise permissions.
+- Mandatory user account registration.
+- Guaranteed generation of production-ready software.
+- Automatic access to external project management systems.
+- Mandatory paid LLM integration.
+
+### Future Enhancements
+
+- Optional AI-assisted requirement refinement.
+- User accounts and cloud synchronization.
+- Project dashboard with multiple saved projects.
+- Shared PRD links.
+- Version history and document comparison.
+- Additional export formats such as PDF and JSON.
+- Agent-specific export presets.
+- Import existing PRDs for structured editing.
+- AI-assisted ambiguity detection and consistency analysis.
+
+---
+
+# 2. PRODUCT PRINCIPLES
+
+## 2.1 Guided, Not Blank
+
+The primary experience must not begin with a giant text editor.
+
+Users should start by selecting the type of project they want to build and answering guided questions.
+
+Free-text input is available only when necessary or useful.
+
+## 2.2 Progressive Disclosure
+
+Do not display every technical option at once.
+
+Show essential questions first. Reveal advanced configuration when:
+- The user selects an advanced mode.
+- A selected feature requires additional configuration.
+- A technical decision materially affects the resulting PRD.
+
+## 2.3 Plain Language First
+
+Technical terms must be explained in simple language.
+
+Example:
+
+Authentication:
+"Bagaimana pengguna membuktikan identitasnya saat login?"
+
+Authorization:
+"Halaman dan tindakan apa saja yang boleh diakses setiap jenis pengguna?"
+
+Database:
+"Data apa saja yang perlu disimpan oleh aplikasi?"
+
+Advanced terminology can be shown as supporting information.
+
+## 2.4 Explicit Decisions
+
+The system must distinguish between:
+
+- Confirmed: explicitly selected by the user.
+- Suggested: recommended default.
+- Assumed: provisional decision made to complete a specification.
+- Unspecified: decision has not been made.
+- Not applicable: section does not apply to this project.
+
+Do not present an unconfirmed suggestion as a confirmed requirement.
+
+## 2.5 Agent-Agnostic Output
+
+The default PRD must use standard Markdown, clear headings, stable requirement IDs, explicit acceptance criteria, and framework-independent terminology wherever possible.
+
+The resulting document must not depend on a particular AI provider.
+
+## 2.6 No Artificial Complexity
+
+Do not force users to configure database schemas, API contracts, authentication, or backend architecture when their project does not require those features.
+
+The generated PRD must adapt to the selected project type.
+
+---
+
+# 3. INFORMATION ARCHITECTURE
+
+## 3.1 Primary Routes
+
+| Route | Purpose | Access |
+|---|---|---|
+| `/` | Landing page | Public |
+| `/builder/new` | Create a new PRD | Public |
+| `/builder/:projectId` | Continue editing a draft | Local draft |
+| `/templates` | Browse project presets | Public |
+| `/about` | Explain the product | Public |
+
+The application may use local project identifiers without requiring accounts.
+
+Routes are conceptual requirements; exact routing implementation depends on the selected framework.
+
+## 3.2 Primary Navigation
+
+- Logo / Home
+- Create PRD
+- Templates
+- About
+- Current project status
+- Preview PRD
+
+Within the builder:
+- Back
+- Next
+- Save status
+- Step navigation
+- Preview
+- Export
+
+## 3.3 Builder Steps
+
+1. Project Basics
+2. Product Goals and Scope
+3. Users and Roles
+4. Features and Business Rules
+5. Pages and User Flows
+6. UI/UX Design
+7. Technical Configuration
+8. Data and Integrations
+9. Security and Quality
+10. Testing and Acceptance
+11. AI Agent Instructions
+12. Review and Export
+
+The number of visible steps may adapt to the selected project type. Skipped sections must not cause incorrect navigation or missing mandatory requirements.
+
+---
+
+# 4. PROJECT CREATION WIZARD
+
+## 4.1 FR-001: Project Initialization
+
+Priority: P0
+
+The system must allow users to create a new PRD project.
+
+Required fields:
+- Project name.
+- Project type.
+- Short project description.
+- Intended output language.
+
+Optional fields:
+- Target audience.
+- Existing project or new project.
+- Project complexity.
+- Design reference URL.
+- Additional notes.
+
+Project type options:
+- Landing page.
+- Portfolio.
+- Business website.
+- Blog or content platform.
+- E-commerce.
+- Admin dashboard.
+- SaaS application.
+- Booking or reservation application.
+- Internal management system.
+- Marketplace.
+- API/backend service.
+- Other custom application.
+
+Acceptance criteria:
+- Users can start with minimal information.
+- Required fields display clear validation messages.
+- Choosing a project type adjusts relevant future questions.
+- The application does not force irrelevant sections on the user.
+- The initial project configuration can be edited later.
+
+## 4.2 FR-002: Project Complexity
+
+Priority: P0
+
+Provide three selectable modes.
+
+### Simple
+For landing pages, portfolios, and small websites.
+
+Includes:
+- Product overview.
+- Pages.
+- Content.
+- Design.
+- Responsive behavior.
+- Basic interactions.
+- SEO and deployment where relevant.
+
+### Standard
+For applications with multiple pages, forms, data, and common integrations.
+
+Includes all relevant simple sections plus:
+- Roles.
+- Feature requirements.
+- Business rules.
+- Data handling.
+- API requirements.
+- Error states.
+- Testing.
+
+### Advanced
+For complex applications, SaaS, and multi-role systems.
+
+Includes relevant standard sections plus:
+- Detailed permissions.
+- Architecture.
+- Database relationships.
+- API contracts.
+- Integration requirements.
+- Security.
+- Performance.
+- Observability.
+- Detailed acceptance criteria.
+- Migration and deployment considerations where relevant.
+
+Users must be able to override individual settings regardless of selected mode.
+
+## 4.3 FR-003: Dynamic Question Engine
+
+Priority: P0
+
+The wizard must show questions based on previous answers.
+
+Examples:
+- Selecting a static landing page should not require database design.
+- Selecting user authentication should reveal login, registration, session, and recovery options.
+- Selecting file uploads should reveal file types, size limits, storage, and access rules.
+- Selecting payments should reveal payment methods, payment states, transaction verification, and failure handling.
+- Selecting multiple user roles should reveal role permissions.
+- Selecting a REST API should reveal endpoint, method, request, response, and error configuration.
+
+Acceptance criteria:
+- Conditional questions appear only when relevant.
+- Changing an earlier answer recalculates dependent questions.
+- Answers that become irrelevant are excluded from the generated PRD.
+- Previously entered answers should be preserved when practical, so changing a selection does not unnecessarily erase user work.
+- The wizard does not generate contradictory requirements because of hidden selections.
+
+---
+
+# 5. PRODUCT REQUIREMENT CONFIGURATOR
+
+## 5.1 FR-004: Project Goals and Scope
+
+Priority: P0
+
+Users can configure:
+- Main problem to solve.
+- Desired product outcome.
+- Primary user needs.
+- Business objectives.
+- Success metrics.
+- In-scope features.
+- Out-of-scope features.
+- Known constraints.
+- Project assumptions.
+- Open questions.
+
+The system must allow multiple selections and optional custom entries.
+
+Acceptance criteria:
+- Goals are included in the PRD.
+- Out-of-scope items are explicitly documented.
+- Unknown information is not silently converted into a confirmed decision.
+- Success metrics can be marked as proposed or confirmed.
+
+## 5.2 FR-005: User Roles and Permissions
+
+Priority: P0 when relevant
+
+Role presets:
+- Public visitor.
+- Registered user.
+- Administrator.
+- Content editor.
+- Manager.
+- Operator or staff.
+- Customer.
+- Vendor or seller.
+- Custom role.
+
+For each role, configure:
+- Role name.
+- Purpose.
+- Accessible pages.
+- Read permissions.
+- Create permissions.
+- Update permissions.
+- Delete permissions.
+- Approval permissions.
+- Sensitive actions.
+- Restrictions.
+
+Permission matrix:
+
+| Resource | View | Create | Update | Delete | Approve |
+|---|---|---|---|---|---|
+| [Resource] | [Roles] | [Roles] | [Roles] | [Roles] | [Roles] |
+
+Acceptance criteria:
+- Permissions are represented explicitly.
+- Unassigned permissions are not assumed to be allowed.
+- Sensitive access requirements are included in the generated technical specification.
+- If the project has no user accounts, role configuration can be skipped.
+
+## 5.3 FR-006: Feature Library
+
+Priority: P0
+
+Provide a searchable feature catalog with category filters, checkboxes, detail panels, and optional configuration fields.
+
+Each feature entry contains:
+- Stable feature ID.
+- Display name.
+- Plain-language explanation.
+- Category.
+- Applicability conditions.
+- Default priority.
+- Required dependencies.
+- Configurable options.
+- Expected PRD sections.
+- Validation rules.
+- Generated requirement content.
+
+### Feature Categories
+
+**A. Authentication**
+- Email and password login.
+- Registration.
+- Logout.
+- Forgot password.
+- Password reset.
+- Email verification.
+- OAuth login.
+- Session management.
+- Remember me.
+- Multi-factor authentication.
+
+**B. User and Account Management**
+- User profile.
+- Profile photo.
+- Change password.
+- Account settings.
+- Account deactivation.
+- User directory.
+- Account status management.
+
+**C. Content Management**
+- Create content.
+- Edit content.
+- Delete content.
+- Draft and publish.
+- Categories and tags.
+- Search and filtering.
+- Pagination.
+- Rich text editor.
+- Media library.
+
+**D. Data Management**
+- CRUD operations.
+- Bulk operations.
+- Sorting.
+- Filtering.
+- Search.
+- Import.
+- Export.
+- Soft delete.
+- Archive and restore.
+- Data validation.
+
+**E. Dashboard and Analytics**
+- Summary cards.
+- Charts.
+- Date range filters.
+- Activity logs.
+- Reports.
+- CSV export.
+- Printable reports.
+- Customizable dashboard.
+
+**F. Commerce**
+- Product catalog.
+- Product variants.
+- Inventory.
+- Shopping cart.
+- Checkout.
+- Order management.
+- Coupons and discounts.
+- Shipping.
+- Payment integration.
+- Refund workflow.
+- Transaction status tracking.
+
+**G. Booking and Scheduling**
+- Availability.
+- Calendar.
+- Reservation creation.
+- Rescheduling.
+- Cancellation.
+- Booking confirmation.
+- Time slot management.
+- Conflict prevention.
+- Reminder notifications.
+
+**H. Communication**
+- Email notifications.
+- In-app notifications.
+- Push notifications.
+- SMS or messaging integration.
+- Notification preferences.
+- Notification history.
+
+**I. File Management**
+- File uploads.
+- Image uploads.
+- File downloads.
+- File previews.
+- File size limits.
+- File type restrictions.
+- Private file access.
+- Storage provider selection.
+
+**J. Administration**
+- Admin dashboard.
+- User management.
+- Role management.
+- System configuration.
+- Audit logs.
+- Content moderation.
+- Feature settings.
+
+**K. UI Interactions**
+- Modal dialogs.
+- Dropdown menus.
+- Tabs.
+- Accordions.
+- Multi-step forms.
+- Toast notifications.
+- Confirmation dialogs.
+- Drag and drop.
+- Keyboard shortcuts where relevant.
+
+**L. Integrations**
+- External APIs.
+- Maps.
+- Analytics.
+- Email providers.
+- Payment providers.
+- Cloud storage.
+- Webhooks.
+- Third-party authentication.
+
+**M. Platform-Specific**
+- SEO.
+- Sitemap.
+- Metadata.
+- Social sharing.
+- Progressive Web App.
+- Offline behavior.
+- Localization.
+- Multiple currencies.
+- Timezone handling.
+
+**N. Custom Feature**
+- User-defined name.
+- Description.
+- Actors.
+- Inputs.
+- Business rules.
+- Expected outputs.
+- Error conditions.
+- Acceptance criteria.
+
+The feature catalog is extensible. New feature definitions must be addable without rewriting the entire wizard.
+
+## 5.4 FR-007: Feature Priority
+
+Priority: P0
+
+Each selected feature can have:
+- P0 — Essential for the product to function.
+- P1 — Important for the initial release.
+- P2 — Optional or planned for later.
+- Future — Explicitly deferred.
+
+The system must explain the meaning of each priority.
+
+The PRD must distinguish MVP features from future features.
+
+---
+
+# 6. BUSINESS RULES AND USER FLOWS
+
+## 6.1 FR-008: Business Rule Builder
+
+Priority: P0
+
+Users can define rules using a structured editor.
+
+Each rule contains:
+- Rule ID.
+- Rule name.
+- Description.
+- Trigger or condition.
+- Required system behavior.
+- Validation conditions.
+- Failure behavior.
+- Related feature.
+
+Example:
+
+Rule: Order Quantity Validation
+
+Condition:
+The user submits an order.
+
+Validation:
+The requested quantity must be a positive integer and cannot exceed available inventory.
+
+Expected behavior:
+Reject invalid quantities and display a useful error message.
+
+The builder must also support custom rules using free text.
+
+## 6.2 FR-009: User Flow Builder
+
+Priority: P0
+
+Users can define important user journeys through ordered steps.
+
+Each flow contains:
+- Flow ID.
+- Flow name.
+- Starting condition.
+- Actor.
+- Ordered actions.
+- System responses.
+- Alternative paths.
+- Failure scenarios.
+- Expected final state.
+
+Preset flows:
+- Visitor browsing.
+- Registration and login.
+- Profile management.
+- Create and edit records.
+- Search and filtering.
+- Checkout and payment, if applicable.
+- Booking, if applicable.
+- Admin approval.
+- Error recovery.
+
+Acceptance criteria:
+- Flows are numbered and rendered in the PRD.
+- Relevant alternative and failure paths are supported.
+- Users can reorder and remove steps.
+- Irrelevant preset flows are excluded.
+
+---
+
+# 7. PAGES AND NAVIGATION
+
+## 7.1 FR-010: Page and Route Builder
+
+Priority: P0
+
+Users can define application pages through a configurable list.
+
+Each page contains:
+- Page name.
+- Route or URL path.
+- Purpose.
+- Accessible roles.
+- Main components.
+- Required data.
+- User actions.
+- Navigation destinations.
+- Loading state.
+- Empty state.
+- Error state.
+- Responsive behavior.
+
+Suggested page presets:
+- Landing page.
+- Login.
+- Registration.
+- Forgot password.
+- Dashboard.
+- List view.
+- Detail view.
+- Create form.
+- Edit form.
+- Profile.
+- Settings.
+- Reports.
+- Admin management.
+- Not found page.
+
+Users can:
+- Add custom pages.
+- Duplicate pages.
+- Reorder pages.
+- Edit route paths.
+- Configure access rules.
+- Link pages to selected features.
+
+The system should suggest relevant pages from selected features but must not silently add unnecessary routes.
+
+## 7.2 FR-011: Navigation Configuration
+
+Priority: P1
+
+Configure:
+- Navbar.
+- Sidebar.
+- Footer.
+- Breadcrumbs.
+- Tabs.
+- Mobile navigation.
+- Redirect behavior.
+- Unauthorized page.
+- Not found page.
+
+Navigation requirements must match the actual page list and role permissions.
+
+---
+
+# 8. UI/UX DESIGN CONFIGURATOR
+
+## 8.1 FR-012: Design Direction
+
+Priority: P0
+
+Provide visual presets:
+- Minimalist.
+- Modern SaaS.
+- Editorial.
+- Corporate.
+- Creative portfolio.
+- E-commerce.
+- Admin dashboard.
+- Glassmorphism.
+- Brutalist.
+- Soft and friendly.
+- Custom design direction.
+
+Each preset must have a written description rather than relying solely on its name.
+
+Additional options:
+- Light theme.
+- Dark theme.
+- Light and dark themes.
+- Brand color.
+- Secondary color.
+- Background color.
+- Typography.
+- Border radius.
+- Spacing density.
+- Shadow intensity.
+- Icon style.
+- Illustration style.
+- Animation preference.
+
+Color and typography fields must accept custom values.
+
+## 8.2 FR-013: Layout and Responsive Design
+
+Priority: P0
+
+Users can specify:
+- Mobile-first or desktop-first preference.
+- Target screen sizes.
+- Maximum content width.
+- Grid layout.
+- Sidebar behavior.
+- Mobile menu behavior.
+- Responsive tables.
+- Card layout.
+- Form layout.
+- Modal behavior.
+- Sticky elements.
+- Image handling.
+
+Default requirements:
+- Layout adapts to mobile, tablet, and desktop.
+- Interactive elements remain usable on touch devices.
+- Content does not overflow its container.
+- Responsive tables have a defined small-screen behavior.
+- Important actions remain accessible on small screens.
+
+## 8.3 FR-014: Component Requirements
+
+Priority: P1
+
+Configurable component catalog:
+- Buttons.
+- Inputs.
+- Selects.
+- Checkboxes.
+- Radio groups.
+- Cards.
+- Tables.
+- Dialogs.
+- Drawers.
+- Dropdown menus.
+- Alerts.
+- Toasts.
+- Progress indicators.
+- Skeleton loaders.
+- Empty states.
+
+For relevant components, define:
+- Variants.
+- States.
+- Validation behavior.
+- Interaction behavior.
+- Accessibility expectations.
+
+## 8.4 FR-015: UI States and Accessibility
+
+Priority: P0
+
+The builder must provide selectable requirements for:
+- Loading.
+- Success.
+- Empty.
+- Error.
+- Disabled.
+- Pending.
+- Confirmation.
+- Permission denied.
+
+Accessibility options:
+- Keyboard navigation.
+- Semantic HTML.
+- Form labels.
+- Visible focus states.
+- Sufficient contrast.
+- Screen reader support.
+- Reduced-motion support.
+
+Accessibility requirements should be included by default where relevant.
+
+## 8.5 FR-016: Design References
+
+Priority: P1
+
+Users may add:
+- Reference website URLs.
+- Written visual descriptions.
+- Brand guidelines.
+- Color palettes.
+- Typography references.
+
+The system must distinguish visual inspiration from requirements that must be implemented.
+
+The generated PRD must not claim to have inspected a reference website unless that inspection actually occurred.
+
+---
+
+# 9. TECHNICAL CONFIGURATION
+
+## 9.1 FR-017: Technology Stack Builder
+
+Priority: P0
+
+Users can choose or leave unspecified:
+- Frontend framework.
+- Programming language.
+- Styling system.
+- Component library.
+- Backend framework.
+- Database.
+- ORM.
+- Authentication provider.
+- State management.
+- Form validation.
+- API style.
+- Testing framework.
+- Deployment platform.
+
+Examples of framework options:
+- React.
+- Next.js.
+- Vue.
+- Nuxt.
+- SvelteKit.
+- Angular.
+- Plain HTML, CSS, and JavaScript.
+
+Examples of backend options:
+- Next.js server functionality.
+- Node.js with Express.
+- NestJS.
+- Go with Gin.
+- Laravel.
+- Django.
+- Separate backend service.
+- No backend.
+
+Examples of database options:
+- PostgreSQL.
+- MySQL.
+- SQLite.
+- MongoDB.
+- Supabase-managed database.
+- Firebase.
+- No database.
+- Undecided.
+
+The library must be extensible and must not imply that every combination is compatible.
+
+## 9.2 Stack Compatibility
+
+Priority: P0
+
+The system must validate obvious incompatibilities and warn about potentially incompatible selections.
+
+Examples:
+- A database-backed feature needs a defined data storage strategy.
+- A backend API requires a server-side implementation or external provider.
+- Server-side authentication requires an appropriate server or identity provider.
+- A purely static deployment cannot independently execute arbitrary server-side code.
+
+The system must not automatically replace the user's selected stack without approval.
+
+## 9.3 FR-018: Architecture Builder
+
+Priority: P1
+
+Optional architecture presets:
+- Static website.
+- Single-page application.
+- Full-stack application.
+- Monolithic application.
+- Modular monolith.
+- Separate frontend and backend.
+- Serverless application.
+- Custom architecture.
+
+Configuration:
+- Frontend/backend boundaries.
+- Data flow.
+- State management.
+- Service boundaries.
+- API communication.
+- Error propagation.
+- Logging.
+- Caching, where relevant.
+
+Architecture recommendations must be labeled as suggestions until confirmed.
+
+## 9.4 FR-019: Code Organization Standards
+
+Priority: P1
+
+Configurable conventions:
+- Naming conventions.
+- Folder structure.
+- Component organization.
+- Reusable logic.
+- Error handling.
+- Type safety.
+- Dependency management.
+- Code formatting.
+- Linting.
+- Documentation.
+- Environment configuration.
+
+Users can select:
+- Follow existing project conventions.
+- Use framework defaults.
+- Use a custom convention.
+
+For existing projects, inspect the codebase before prescribing a replacement structure.
+
+---
+
+# 10. DATABASE AND API CONFIGURATION
+
+## 10.1 FR-020: Data Model Builder
+
+Priority: P0 when a database is relevant
+
+Users can define entities, fields, and relationships.
+
+For each entity:
+- Entity name.
+- Purpose.
+- Field name.
+- Data type.
+- Required or optional.
+- Unique constraint.
+- Default value.
+- Primary key.
+- Relationships.
+- Validation rules.
+- Sensitive data classification.
+
+Relationship types:
+- One-to-one.
+- One-to-many.
+- Many-to-many.
+
+Common field presets:
+- ID.
+- Name.
+- Description.
+- Email.
+- Password hash.
+- Status.
+- Price.
+- Quantity.
+- Created timestamp.
+- Updated timestamp.
+- Foreign key.
+- File URL.
+
+Acceptance criteria:
+- Relationships must be explicit.
+- Passwords must never be stored as plaintext.
+- Sensitive fields must be handled appropriately.
+- Database details are omitted when the project does not require persistent data.
+- Generated schema proposals must be distinguishable from confirmed schema decisions.
+
+## 10.2 FR-021: API Builder
+
+Priority: P1
+
+Users can choose:
+- REST API.
+- GraphQL.
+- Server actions or framework-native server communication.
+- Third-party API.
+- No external API.
+- Undecided.
+
+Each endpoint can include:
+- Endpoint ID.
+- HTTP method.
+- Path.
+- Purpose.
+- Authentication requirement.
+- Authorization requirements.
+- Request parameters.
+- Request body.
+- Success response.
+- Error responses.
+- Validation rules.
+- Related feature.
+
+Common HTTP methods:
+- GET.
+- POST.
+- PUT.
+- PATCH.
+- DELETE.
+
+The system must generate consistent API documentation without inventing actual production credentials or claiming endpoints already exist.
+
+---
+
+# 11. INTEGRATIONS, SECURITY, AND NON-FUNCTIONAL REQUIREMENTS
+
+## 11.1 FR-022: Integration Builder
+
+Priority: P1
+
+Optional integrations:
+- Email provider.
+- Payment gateway.
+- File storage.
+- OAuth provider.
+- Maps.
+- Analytics.
+- Search service.
+- Messaging service.
+- AI provider.
+- Webhooks.
+- Other external APIs.
+
+For each integration:
+- Provider.
+- Purpose.
+- Required or optional.
+- Data exchanged.
+- Authentication method.
+- Failure behavior.
+- Rate limit considerations.
+- Environment variables required.
+
+Provider-specific details must be configurable and must not be fabricated.
+
+## 11.2 FR-023: Security Requirements
+
+Priority: P0
+
+Provide applicable security requirements:
+- Server-side input validation.
+- Authentication.
+- Role-based authorization.
+- Secure session handling.
+- Password hashing.
+- Rate limiting.
+- CSRF protection where applicable.
+- XSS prevention.
+- SQL injection prevention.
+- Secure file upload validation.
+- Secret management.
+- Sensitive data protection.
+- Audit logging for sensitive operations.
+- Appropriate error messages.
+- Data access restrictions.
+- Backup and recovery requirements.
+
+The system must select requirements based on project architecture and features.
+
+Do not imply that every security control is relevant to every application. Explain applicability and generate explicit exclusions where important.
+
+## 11.3 FR-024: Non-Functional Requirements
+
+Priority: P1
+
+Configurable categories:
+- Performance.
+- Reliability.
+- Scalability.
+- Accessibility.
+- Maintainability.
+- Compatibility.
+- Privacy.
+- Availability.
+- Localization.
+- Observability.
+- Backup and recovery.
+
+Where possible, requirements must include measurable targets.
+
+Example:
+- Target response time: [value] under [specified conditions].
+- Maximum upload size: [value].
+- Supported browsers: [list].
+- Expected concurrent users: [value].
+
+Do not fabricate benchmarks or guarantee that selected targets will be achieved.
+
+Unspecified targets must remain marked as undecided or proposed.
+
+---
+
+# 12. TESTING AND ACCEPTANCE CRITERIA
+
+## 12.1 FR-025: Testing Configuration
+
+Priority: P0
+
+Users can select applicable test categories:
+- Unit testing.
+- Integration testing.
+- API testing.
+- End-to-end testing.
+- UI testing.
+- Accessibility testing.
+- Security testing.
+- Performance testing.
+- Responsive testing.
+- Regression testing.
+- User acceptance testing.
+
+The system must recommend relevant categories based on project complexity and features.
+
+## 12.2 FR-026: Acceptance Criteria Generator
+
+Priority: P0
+
+Each important feature must have testable acceptance criteria.
+
+Use Given/When/Then format where appropriate.
+
+Example:
+
+Given:
+The user is authenticated and has permission to create a record.
+
+When:
+The user submits valid data.
+
+Then:
+The system stores the record and displays a success response.
+
+Include alternative scenarios where relevant:
+- Invalid input.
+- Missing required fields.
+- Unauthorized access.
+- Empty results.
+- Server failure.
+- Duplicate data.
+- Conflicting updates.
+
+Acceptance criteria must describe observable behavior rather than vague statements such as "the feature works correctly."
+
+## 12.3 FR-027: Definition of Done
+
+Priority: P0
+
+Allow users to choose completion criteria:
+- Required functionality implemented.
+- Acceptance criteria satisfied.
+- Relevant tests pass.
+- Linting and type checks pass where configured.
+- Build succeeds.
+- Responsive behavior verified.
+- Security requirements reviewed.
+- Documentation updated.
+- Known limitations documented.
+
+The generated instructions must require the agent to report checks that were not run.
+
+---
+
+# 13. AI AGENT INSTRUCTION BUILDER
+
+## 13.1 FR-028: Agent-Agnostic Instructions
+
+Priority: P0
+
+Generate a standard instruction section that can be used with compatible AI coding agents.
+
+Required instructions:
+- Read the generated PRD before implementation.
+- Inspect existing project files before modifying them.
+- Follow confirmed requirements and technical constraints.
+- Do not invent or silently change requirements.
+- Identify contradictions and missing critical information.
+- State assumptions for minor unspecified decisions.
+- Work incrementally.
+- Preserve unrelated existing functionality.
+- Validate inputs and permissions.
+- Run relevant tests and build checks.
+- Report actual verification results.
+- Document incomplete work and known limitations.
+
+## 13.2 FR-029: Agent Presets
+
+Priority: P1
+
+Provide a generic default preset and optional agent-specific presets.
+
+Possible presets:
+- Generic AI Coding Agent.
+- Cursor.
+- Claude Code.
+- OpenAI Codex.
+- Windsurf.
+- Other configurable agents.
+
+Agent-specific presets must be maintained as configurable instruction templates.
+
+Do not claim every agent reads the same instruction file or supports identical workflows.
+
+The default Markdown PRD must remain compatible with ordinary copy-and-paste workflows.
+
+## 13.3 FR-030: Implementation Workflow Options
+
+Priority: P1
+
+Users can configure the preferred implementation approach:
+- Plan first, then implement.
+- Implement incrementally by feature.
+- Generate a technical plan before coding.
+- Test each feature before moving on.
+- Review the existing codebase before changes.
+- Require approval before destructive operations.
+- Require approval before changing architecture.
+- Require approval before adding major dependencies.
+
+The output must distinguish mandatory instructions from preferences.
+
+---
+
+# 14. PRD GENERATION ENGINE
+
+## 14.1 FR-031: Deterministic Document Generation
+
+Priority: P0
+
+The application must generate a PRD from the structured project configuration.
+
+MVP generation must work without a paid AI API.
+
+Use a structured template engine and feature-specific content definitions.
+
+The output must be reproducible for the same configuration and template version, excluding intentionally variable metadata such as generation timestamps.
+
+## 14.2 Generated Document Structure
+
+The generated PRD should contain applicable sections from:
+
+1. Product Overview.
+2. Problem Statement.
+3. Goals and Success Metrics.
+4. Target Users and Roles.
+5. Product Scope.
+6. Functional Requirements.
+7. Business Rules.
+8. Pages and Routing.
+9. User Flows.
+10. UI/UX and Design System.
+11. Technical Specification.
+12. Database Design.
+13. API Specification.
+14. Integrations.
+15. Security Requirements.
+16. Non-Functional Requirements.
+17. Testing Requirements.
+18. Acceptance Criteria.
+19. Definition of Done.
+20. Constraints and Decisions.
+21. Open Questions and Assumptions.
+22. Implementation Plan.
+23. AI Agent Instructions.
+
+Sections must be included only when relevant or explicitly requested.
+
+## 14.3 Requirement ID Generation
+
+Priority: P0
+
+Generate stable IDs for requirements.
+
+Examples:
+- FR-001: Functional Requirement.
+- NFR-001: Non-Functional Requirement.
+- BR-001: Business Rule.
+- UF-001: User Flow.
+- TC-001: Test Case.
+
+Requirements must maintain consistent references when the user changes unrelated settings.
+
+When a requirement is removed, regenerate references safely and avoid broken cross-references.
+
+## 14.4 Requirement Completeness
+
+Priority: P0
+
+The generator must:
+- Include all selected in-scope features.
+- Exclude explicitly out-of-scope features from implementation requirements.
+- Include applicable dependencies.
+- Include configured validation rules.
+- Include relevant UI states.
+- Include applicable security requirements.
+- Include testable acceptance criteria.
+- Distinguish confirmed decisions from assumptions.
+- Avoid contradictory or duplicated sections.
+- Avoid unsupported claims about existing implementations.
+
+The system must not claim that the generated PRD guarantees correct implementation by an AI agent.
+
+## 14.5 FR-032: Optional AI-Assisted Refinement
+
+Priority: P2
+
+A future optional AI service may help:
+- Expand unclear requirements.
+- Suggest missing requirements.
+- Identify contradictions.
+- Improve wording.
+- Suggest measurable acceptance criteria.
+- Translate the document.
+- Summarize complex configurations.
+
+The feature must:
+- Be optional.
+- Clearly identify AI-generated suggestions.
+- Preserve user-confirmed decisions.
+- Require user review before applying changes.
+- Avoid silently changing the project scope.
+- Handle API errors and unavailable providers gracefully.
+
+The MVP must remain functional without this integration.
+
+---
+
+# 15. PRD PREVIEW AND EXPORT
+
+## 15.1 FR-033: Live Preview
+
+Priority: P0
+
+Provide a split workspace:
+- Configuration panel.
+- Generated document preview.
+
+On desktop, both panels should be visible where space allows.
+
+On mobile, users can switch between configuration and preview.
+
+Preview features:
+- Render Markdown.
+- Display document outline.
+- Navigate to sections.
+- Highlight incomplete requirements.
+- Show generation status.
+- Reflect configuration changes.
+- Preserve manually edited content according to the editing rules.
+
+## 15.2 FR-034: Document Editing
+
+Priority: P0
+
+Users can edit generated PRD content before exporting.
+
+The application must define how manual edits interact with structured configuration.
+
+Recommended behavior:
+- Maintain a structured project configuration as the source of truth.
+- Track whether the generated document has been manually edited.
+- Warn before regeneration if manual changes could be overwritten.
+- Offer a safe way to preserve edits or return to generated content.
+- Do not silently discard user-written content.
+
+## 15.3 FR-035: Copy to Clipboard
+
+Priority: P0
+
+Provide a prominent "Copy PRD" action.
+
+Expected behavior:
+1. Generate the latest document.
+2. Copy the complete Markdown source to the clipboard.
+3. Display a success message when copying succeeds.
+4. Display a useful fallback if clipboard access fails.
+
+The copied content must contain Markdown source, not merely the rendered visual preview.
+
+## 15.4 FR-036: Download Markdown
+
+Priority: P0
+
+Users can download the document as a `.md` file.
+
+Requirements:
+- Use a sanitized filename.
+- Preserve Markdown formatting.
+- Use UTF-8 encoding.
+- Include relevant document metadata.
+- Exclude application-only UI elements.
+- Include a clear error state if export fails.
+
+## 15.5 FR-037: Export Validation
+
+Priority: P0
+
+Before export, show a summary:
+- Selected feature count.
+- Included sections.
+- Missing required decisions.
+- Unresolved conflicts.
+- Assumptions.
+- Out-of-scope items.
+
+Users may proceed with non-critical warnings.
+
+Critical contradictions must be resolved or explicitly acknowledged before generating a final specification.
+
+The system must not block export simply because optional information is missing.
+
+---
+
+# 16. LOCAL PROJECT STORAGE
+
+## 16.1 FR-038: Draft Autosave
+
+Priority: P0
+
+The MVP must save draft configuration locally without requiring an account.
+
+Requirements:
+- Autosave after relevant changes.
+- Indicate saving, saved, or failed status.
+- Restore the latest saved draft after refresh.
+- Preserve selected options and project metadata.
+- Handle invalid or outdated saved data safely.
+- Provide an explicit option to reset or delete a draft.
+
+Implementation may use browser local storage or IndexedDB, depending on the selected data model.
+
+## 16.2 FR-039: Project Portability
+
+Priority: P1
+
+Future enhancement:
+- Export project configuration as JSON.
+- Import a compatible configuration.
+- Validate imported data before loading.
+- Warn when imported configuration uses an unsupported schema version.
+
+The application must distinguish configuration backup from the final Markdown document.
+
+## 16.3 Data Privacy
+
+The MVP should process and store project configuration locally whenever possible.
+
+Users must be informed that locally saved drafts may be lost if browser data is cleared.
+
+If optional AI or external integrations are added, disclose what information is transmitted and to which provider.
+
+Do not send project content to third parties without the corresponding feature being activated and clearly disclosed.
+
+---
+
+# 17. USER EXPERIENCE REQUIREMENTS
+
+## 17.1 FR-040: Landing Page
+
+Priority: P1
+
+The landing page must communicate:
+- What PRD Studio does.
+- Why structured requirements matter.
+- How the wizard works.
+- Example output.
+- Supported project categories.
+- Main call to action.
+
+Primary CTA:
+"Create Your PRD"
+
+Secondary CTA:
+"Explore Templates"
+
+The design should feel like a polished modern productivity tool, not a generic administration form.
+
+## 17.2 FR-041: Builder Navigation
+
+Priority: P0
+
+The wizard must provide:
+- Current step indicator.
+- Completed step indicator.
+- Back and next navigation.
+- Step overview.
+- Save status.
+- Validation feedback.
+- Preview access.
+- Clear indication of optional and required fields.
+
+Users must be able to revisit previous steps without losing valid input.
+
+## 17.3 FR-042: Presets and Templates
+
+Priority: P1
+
+Provide starter templates:
+- Portfolio website.
+- Business landing page.
+- Blog or CMS.
+- E-commerce.
+- Admin dashboard.
+- Booking application.
+- SaaS application.
+- School management system.
+- Internal management application.
+- Custom blank project.
+
+A preset populates an editable starting configuration. It must not lock the user into its original choices.
+
+## 17.4 FR-043: Searchable Option Catalog
+
+Priority: P0
+
+When option lists are long, provide:
+- Search.
+- Category filters.
+- Selected item counter.
+- Select and deselect controls.
+- Expandable descriptions.
+- Recommended indicators.
+- Clear selected state.
+- Optional custom option.
+
+Do not place hundreds of options in a single unstructured list.
+
+Group advanced choices by category and reveal detailed configuration only when selected.
+
+---
+
+# 18. DATA MODEL
+
+The initial implementation should use a versioned structured project configuration.
+
+Suggested logical entities:
+
+## Project
+- id
+- name
+- description
+- projectType
+- complexity
+- outputLanguage
+- createdAt
+- updatedAt
+- schemaVersion
+
+## ProjectConfiguration
+- projectId
+- goals
+- scope
+- users
+- roles
+- selectedFeatures
+- businessRules
+- pages
+- userFlows
+- designConfig
+- technicalConfig
+- dataModels
+- apiDefinitions
+- integrations
+- securityConfig
+- testingConfig
+- agentInstructions
+- assumptions
+- openQuestions
+
+## FeatureDefinition
+- id
+- name
+- description
+- category
+- applicability
+- dependencies
+- defaultPriority
+- configurationSchema
+- requirementTemplate
+- templateVersion
+
+## GeneratedDocument
+- projectId
+- markdownContent
+- generatedAt
+- templateVersion
+- manuallyEdited
+- contentVersion
+
+For MVP, these may be represented as validated local structured objects rather than database tables.
+
+Avoid duplicating the same information across multiple storage structures without a clear reason.
+
+---
+
+# 19. NON-FUNCTIONAL REQUIREMENTS
+
+## 19.1 Performance
+
+- Wizard navigation should feel immediate for ordinary interactions.
+- Local document generation should not require network access.
+- Large option catalogs should remain searchable and usable.
+- Preview updates should not unnecessarily regenerate unrelated application state.
+
+Performance targets must be validated through testing.
+
+## 19.2 Reliability
+
+- Drafts should survive ordinary page refreshes.
+- Failed saves must be communicated clearly.
+- Invalid configuration must not crash the builder.
+- Export must not silently omit selected requirements.
+- Changes to the generator should be tested against representative project configurations.
+
+## 19.3 Maintainability
+
+- Feature definitions must be modular.
+- Templates must be separated from UI components.
+- Validation rules must be testable.
+- Project configuration must be versioned.
+- Generated Markdown must be separated from presentation components.
+- Avoid unnecessary abstraction and duplicated logic.
+
+## 19.4 Compatibility
+
+- Support current stable versions of major desktop browsers.
+- Support common mobile browsers.
+- Ensure usable layouts at mobile, tablet, and desktop widths.
+- Use semantic HTML and accessible interaction patterns.
+
+## 19.5 Accessibility
+
+- Keyboard-accessible controls.
+- Visible focus indicators.
+- Clear form labels.
+- Accessible validation feedback.
+- Sufficient contrast.
+- Appropriate ARIA attributes where needed.
+- Reduced-motion support where applicable.
+
+---
+
+# 20. DESIGN SYSTEM AND VISUAL DIRECTION
+
+## 20.1 Design Goals
+
+The interface should feel:
+- Modern.
+- Professional.
+- Clear.
+- Structured.
+- Efficient.
+- Beginner-friendly.
+- Suitable for a technical productivity tool.
+
+The product should not feel like an intimidating enterprise configuration dashboard.
+
+## 20.2 Recommended Visual Direction
+
+- Neutral background.
+- Clear typographic hierarchy.
+- Restrained accent color.
+- Rounded but not excessively rounded components.
+- Subtle borders and shadows.
+- Strong visual separation between steps.
+- Clear selected and completed states.
+- Readable Markdown preview.
+- Consistent spacing and component sizing.
+
+Final colors, fonts, and component library may be selected during technical planning.
+
+## 20.3 Builder Layout
+
+Desktop:
+- Left navigation or step sidebar.
+- Central configuration workspace.
+- Optional right-side preview panel.
+
+Mobile:
+- Compact top navigation.
+- Single primary content column.
+- Accessible bottom or top step navigation.
+- Switchable preview.
+- No horizontal overflow.
+
+Avoid forcing all three desktop panels onto narrow screens.
+
+---
+
+# 21. TESTING PLAN
+
+## 21.1 Unit Tests
+
+Test:
+- Configuration validation.
+- Conditional question logic.
+- Feature dependencies.
+- Requirement ID generation.
+- Markdown generation.
+- Markdown escaping.
+- Scope filtering.
+- Conflict detection.
+- Schema version handling.
+
+## 21.2 Integration Tests
+
+Test:
+- Wizard configuration to generated PRD.
+- Draft autosave and restore.
+- Manual edit and regeneration behavior.
+- Copy action.
+- Markdown download.
+- Imported configuration validation, when implemented.
+
+## 21.3 End-to-End Scenarios
+
+### Scenario A: Static Portfolio
+
+1. Create a portfolio project.
+2. Select a simple project mode.
+3. Choose pages and visual style.
+4. Skip backend and database configuration.
+5. Generate the PRD.
+6. Verify irrelevant backend sections are excluded.
+7. Copy and download the document.
+
+Expected result:
+A complete website PRD without unnecessary database or API requirements.
+
+### Scenario B: Multi-Role Management Application
+
+1. Create a management application.
+2. Select standard or advanced mode.
+3. Configure administrator and user roles.
+4. Select CRUD, search, and reporting features.
+5. Define data entities and permissions.
+6. Configure UI states and testing.
+7. Generate the PRD.
+
+Expected result:
+A structured document containing roles, permissions, feature requirements, relevant data requirements, and testable acceptance criteria.
+
+### Scenario C: Conditional Features
+
+1. Enable authentication.
+2. Configure login and password recovery.
+3. Disable authentication.
+4. Regenerate the PRD.
+
+Expected result:
+Authentication-specific requirements are excluded from the active specification unless another selected feature still depends on them.
+
+### Scenario D: Manual Editing
+
+1. Generate a PRD.
+2. Manually change a section.
+3. Modify project configuration.
+4. Attempt regeneration.
+
+Expected result:
+The application warns about possible overwritten edits and provides an explicit recovery or preservation path.
+
+### Scenario E: Offline Generation
+
+1. Open a project with its configuration available locally.
+2. Disconnect network access.
+3. Change feature selections.
+4. Generate and preview the PRD.
+
+Expected result:
+Core document generation works without a paid AI service or network request.
+
+## 21.4 Quality Gates
+
+- All critical tests pass.
+- No unresolved critical configuration contradictions.
+- No broken requirement references.
+- No selected mandatory feature is silently omitted.
+- Copy and download work in supported browsers.
+- Build and static checks pass when configured.
+- Known limitations are reported honestly.
+
+---
+
+# 22. IMPLEMENTATION PLAN
+
+## Phase 1: Foundation
+
+- Establish project structure.
+- Define project configuration schema.
+- Build design system.
+- Implement landing page.
+- Implement wizard navigation.
+- Implement local draft persistence.
+
+## Phase 2: Core Builder
+
+- Implement project basics.
+- Implement scope and goals.
+- Implement roles and permissions.
+- Implement feature catalog.
+- Implement conditional configuration.
+- Implement page and user flow builder.
+- Implement design configuration.
+
+## Phase 3: Technical Specification
+
+- Implement stack configuration.
+- Implement database model builder.
+- Implement API builder.
+- Implement integrations.
+- Implement security and quality settings.
+- Implement testing and acceptance criteria configuration.
+
+## Phase 4: Document Engine
+
+- Implement modular Markdown templates.
+- Implement stable requirement IDs.
+- Implement dependency handling.
+- Implement conflict and completeness validation.
+- Implement preview and manual editing.
+- Implement copy and download.
+
+## Phase 5: Polish and Verification
+
+- Implement presets.
+- Improve mobile experience.
+- Test autosave and recovery.
+- Validate representative project types.
+- Fix accessibility and usability issues.
+- Run tests and production build checks.
+
+Implementation order may be adjusted based on actual dependencies, but core configuration and document generation must remain the highest priorities.
+
+---
+
+# 23. ACCEPTANCE CRITERIA AND DEFINITION OF DONE
+
+The MVP is considered complete when:
+
+- [ ] Users can create a PRD without writing a full document manually.
+- [ ] The wizard supports detailed structured selections.
+- [ ] Feature options are grouped and searchable.
+- [ ] Conditional questions work correctly.
+- [ ] Users can define project scope and roles.
+- [ ] Users can configure relevant features and business rules.
+- [ ] Users can configure pages and user flows.
+- [ ] Users can define UI/UX preferences.
+- [ ] Relevant technical and data requirements can be configured.
+- [ ] Security, testing, and acceptance criteria are represented.
+- [ ] The generator produces valid, organized Markdown.
+- [ ] Requirement IDs and internal references remain consistent.
+- [ ] Irrelevant sections are excluded.
+- [ ] Important missing decisions and contradictions are identified.
+- [ ] Users can preview and edit the document.
+- [ ] Manual edits are not silently discarded.
+- [ ] Copy to clipboard works or presents a useful fallback.
+- [ ] Markdown download works.
+- [ ] Drafts can be restored after refresh.
+- [ ] The application works without a paid AI API.
+- [ ] The interface works on mobile, tablet, and desktop.
+- [ ] Relevant automated tests pass.
+- [ ] The build succeeds.
+- [ ] No critical issue remains unresolved.
+- [ ] Incomplete checks or limitations are documented.
+
+---
+
+# 24. CONSTRAINTS AND OPEN DECISIONS
+
+## Confirmed Product Decisions
+
+- The primary product is a web application.
+- The core experience is selection-driven rather than blank-page writing.
+- Options must be detailed and organized across relevant product aspects.
+- The generated PRD must be ready to copy into an AI coding agent.
+- The output must be structured and professionally formatted.
+- The core generator must not require a paid AI API.
+- Users must be able to review and edit the generated document.
+
+## Provisional Implementation Decisions
+
+- Use a structured configuration as the source of truth.
+- Use modular, deterministic Markdown templates for MVP generation.
+- Use local draft persistence before introducing accounts or cloud storage.
+- Keep technology-specific agent instructions separate from the generic PRD.
+- Make advanced configuration progressively accessible.
+- Use Indonesian as the default interface and output language.
+
+## Open Decisions
+
+These decisions should be finalized during technical planning:
+- Exact frontend framework.
+- Exact styling and component libraries.
+- Whether the first release includes optional AI-assisted refinement.
+- Final branding, name, logo, and color palette.
+- Whether the first release needs multiple saved projects.
+- Whether JSON configuration import/export belongs in MVP.
+- Exact browser support policy.
+
+Do not silently treat provisional decisions as permanent constraints if a validated implementation plan provides a better approach.
+
+---
+
+# 25. INSTRUCTIONS FOR THE IMPLEMENTING AI AGENT
+
+You are implementing PRD Studio according to this document.
+
+Before writing code:
+
+1. Inspect the existing repository and project configuration.
+2. Identify existing code, dependencies, conventions, and constraints.
+3. Review the complete PRD.
+4. Identify ambiguous requirements, technical dependencies, and implementation risks.
+5. Propose a concise implementation plan.
+6. Ask for clarification when a missing decision materially affects architecture, security, or core product behavior.
+7. Do not ask unnecessary questions for minor implementation details; use sensible defaults and document assumptions.
+
+During implementation:
+
+- Treat confirmed requirements as the source of truth.
+- Keep the project configuration separate from the generated Markdown.
+- Build the feature catalog and document templates as modular systems.
+- Avoid hardcoding every feature directly into UI components.
+- Preserve existing functionality.
+- Avoid introducing unnecessary dependencies.
+- Do not implement fake integrations that appear operational.
+- Do not silently overwrite manually edited documents.
+- Do not claim tests passed unless they were executed.
+- Implement and verify functionality incrementally.
+
+Before declaring completion:
+
+1. Verify the critical user journeys.
+2. Run relevant tests, linting, type checks, and build commands.
+3. Fix issues introduced by the implementation.
+4. Review output completeness for static, standard, and advanced project examples.
+5. Verify that generated documents contain no irrelevant or contradictory requirements.
+6. Report implemented features, modified files, actual verification results, unresolved issues, and remaining work.
+
+**Final implementation objective:**
+
+Deliver a usable PRD builder in which users can select and configure detailed requirements through a guided interface, review the generated specification, and copy or download a complete AI-agent-ready Markdown PRD with minimal manual writing.
