@@ -1,9 +1,9 @@
 import React from 'react';
-import { Eye, LayoutTemplate, ArrowRight, Sparkles, FileText } from 'lucide-react';
+import { Eye, LayoutTemplate, ArrowRight, Sparkles, FileText, Bot } from 'lucide-react';
 
 interface NavbarProps {
-  currentView: 'landing' | 'builder' | 'templates';
-  onNavigate: (view: 'landing' | 'builder' | 'templates') => void;
+  currentView: 'landing' | 'builder' | 'templates' | 'agents';
+  onNavigate: (view: 'landing' | 'builder' | 'templates' | 'agents') => void;
   onOpenTemplates: () => void;
   onTogglePreviewDrawer?: () => void;
   previewCount?: number;
@@ -43,41 +43,54 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Center / Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+        <nav className="hidden md:flex items-center gap-1.5 lg:gap-3 text-sm font-medium text-gray-600">
           <button
             onClick={() => onNavigate('landing')}
-            className={`hover:text-gray-900 transition-colors cursor-pointer py-1 ${
-              currentView === 'landing' ? 'text-indigo-600 font-semibold' : ''
+            className={`hover:text-gray-900 px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+              currentView === 'landing' ? 'text-indigo-600 font-semibold bg-indigo-50/60' : ''
             }`}
           >
             Beranda
           </button>
           <button
             onClick={() => onNavigate('builder')}
-            className={`hover:text-gray-900 transition-colors cursor-pointer py-1 ${
-              currentView === 'builder' ? 'text-indigo-600 font-semibold' : ''
+            className={`hover:text-gray-900 px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
+              currentView === 'builder' ? 'text-indigo-600 font-semibold bg-indigo-50/60' : ''
             }`}
           >
-            Wizard Generator
+            <FileText className="w-4 h-4 text-indigo-500" />
+            <span>PRD Generator</span>
+          </button>
+          <button
+            onClick={() => onNavigate('agents')}
+            className={`hover:text-gray-900 px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
+              currentView === 'agents' ? 'text-purple-600 font-semibold bg-purple-50/70' : ''
+            }`}
+          >
+            <Bot className="w-4 h-4 text-purple-600" />
+            <span>AGENTS.md Builder</span>
+            <span className="text-[10px] bg-purple-100 text-purple-700 font-bold px-1.5 py-0.2 rounded-full">
+              Baru
+            </span>
           </button>
           <button
             onClick={onOpenTemplates}
-            className="hover:text-gray-900 transition-colors cursor-pointer py-1 flex items-center gap-1.5"
+            className="hover:text-gray-900 px-3 py-1.5 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5"
           >
+            <LayoutTemplate className="w-3.5 h-3.5 text-gray-400" />
             <span>8 Template</span>
-            <span className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded font-mono">Baru</span>
           </button>
         </nav>
 
         {/* Right Actions */}
         <div className="flex items-center gap-2.5">
-          {currentView === 'builder' && onTogglePreviewDrawer && (
+          {(currentView === 'builder' || currentView === 'agents') && onTogglePreviewDrawer && (
             <button
               onClick={onTogglePreviewDrawer}
               className="inline-flex items-center gap-1.5 px-3.5 h-9 text-xs font-semibold text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 hover:border-gray-300 rounded-lg transition-all cursor-pointer shadow-2xs"
             >
               <Eye className="w-3.5 h-3.5 text-indigo-600" />
-              <span>Pratinjau PRD</span>
+              <span>Pratinjau Dokumen</span>
               {previewCount > 0 && (
                 <span className="w-4 h-4 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center font-bold">
                   {previewCount}
@@ -87,13 +100,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
 
           {currentView === 'landing' ? (
-            <button
-              onClick={() => onNavigate('builder')}
-              className="inline-flex items-center gap-2 px-4 h-9 text-xs font-semibold text-white bg-gray-900 hover:bg-black rounded-lg transition-all cursor-pointer shadow-xs active:scale-98 whitespace-nowrap"
-            >
-              <span>Mulai Buat PRD</span>
-              <ArrowRight className="w-3.5 h-3.5 text-white/80" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => onNavigate('agents')}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 h-9 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition-all cursor-pointer"
+              >
+                <Bot className="w-3.5 h-3.5 text-purple-600" />
+                <span>AGENTS.md</span>
+              </button>
+              <button
+                onClick={() => onNavigate('builder')}
+                className="inline-flex items-center gap-2 px-4 h-9 text-xs font-semibold text-white bg-gray-900 hover:bg-black rounded-lg transition-all cursor-pointer shadow-xs active:scale-98 whitespace-nowrap"
+              >
+                <span>Mulai Buat PRD</span>
+                <ArrowRight className="w-3.5 h-3.5 text-white/80" />
+              </button>
+            </div>
           ) : (
             <button
               onClick={onOpenTemplates}

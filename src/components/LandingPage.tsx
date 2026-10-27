@@ -11,18 +11,21 @@ import {
   Laptop,
   FileText,
   Terminal,
+  Bot,
   Zap
 } from 'lucide-react';
 import { PRESET_TEMPLATES, ProjectTemplate } from '../data/templates';
 
 interface LandingPageProps {
   onStartNew: () => void;
+  onOpenAgentBuilder?: () => void;
   onSelectTemplate: (template: ProjectTemplate) => void;
   onExploreTemplates: () => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
   onStartNew,
+  onOpenAgentBuilder,
   onSelectTemplate,
   onExploreTemplates
 }) => {
@@ -34,12 +37,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
           <button
             onClick={onStartNew}
-            className="w-full sm:w-auto px-8 h-12 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-all cursor-pointer shadow-md active:scale-98 flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-7 h-12 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-all cursor-pointer shadow-md active:scale-98 flex items-center justify-center gap-2"
           >
             <Sparkles className="w-4 h-4" />
             <span>Mulai Buat PRD Sekarang</span>
             <ArrowRight className="w-4 h-4" />
           </button>
+
+          {onOpenAgentBuilder && (
+            <button
+              onClick={onOpenAgentBuilder}
+              className="w-full sm:w-auto px-6 h-12 text-sm font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
+            >
+              <Bot className="w-4 h-4 text-purple-600" />
+              <span>Konfigurasi AGENTS.md</span>
+              <span className="text-[10px] bg-purple-200/70 text-purple-800 font-bold px-1.5 py-0.5 rounded-full">
+                Baru
+              </span>
+            </button>
+          )}
 
           <button
             onClick={onExploreTemplates}

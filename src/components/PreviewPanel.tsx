@@ -9,35 +9,54 @@ import {
   AlertTriangle, 
   ListTree, 
   X,
-  Sparkles
+  Sparkles,
+  Bot,
+  FolderArchive
 } from 'lucide-react';
 import { marked } from 'marked';
 import { ProjectConfiguration, ValidationIssue } from '../types/prd';
+import { AgentConfiguration } from '../types/agent';
 import { generateMarkdownPRD } from '../utils/markdownGenerator';
+import { generateAgentMarkdown } from '../utils/agentMdGenerator';
 
 interface PreviewPanelProps {
   config: ProjectConfiguration;
+  agentConfig?: AgentConfiguration;
   issues: ValidationIssue[];
   onClose?: () => void;
   isModal?: boolean;
+  defaultDoc?: 'prd' | 'agent';
 }
 
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   config,
+  agentConfig,
   issues,
   onClose,
-  isModal = false
+  isModal = false,
+  defaultDoc = 'prd'
 }) => {
+  const [selectedDoc, setSelectedDoc] = useState<'prd' | 'agent'>(defaultDoc);
   const [activeTab, setActiveTab] = useState<'preview' | 'raw'>('preview');
   const [copied, setCopied] = useState(false);
-  const [manualMarkdown, setManualMarkdown] = useState<string | null>(null);
+  const [manualPrdMarkdown, setManualPrdMarkdown] = useState<string | null>(null);
+  const [manualAgentMarkdown, setManualAgentMarkdown] = useState<string | null>(null);
   const [showToc, setShowToc] = useState(false);
 
-  const generatedMarkdown = useMemo(() => {
+  // Auto-generate PRD
+  const generatedPrd = useMemo(() => {
     return generateMarkdownPRD(config);
   }, [config]);
 
-  const activeMarkdown = manualMarkdown !== null ? manualMarkdown : generatedMarkdown;
+  // Auto-generate AGENTS.md
+  const generatedAgent = useMemo(() => {
+    if (!agentConfig) return '';
+    return generateAgentMarkdown(agentConfig, config);
+  }, [agentConfig, config]);
+
+  const activeMarkdown = selectedDoc === 'prd'
+    ? (manualPrdMarkdown !== null ? manualPrdMarkdown : generatedPrd)
+    : (manualAgentMarkdown !== null ? manualAgentMarkdown : generatedAgent);
 
   const renderedHtml = useMemo(() => {
     return marked.parse(activeMarkdown, { async: false, breaks: true }) as string;
@@ -77,8 +96,22 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
     }
   };
 
-  const handleDownload = () => {
-    const filename = `${(config.name || 'Proyek').replace(/[^a-zA-Z0-9_-]/g, '_')}_PRD.md`;
+  const handleDownloadActive = () => {
+    let filename = '';
+    if (selectedDoc === 'prd') {
+      filename = `${(config.name || 'Proyek').replace(/[^a-zA-Z0-9_-]/g, '_')}_PRD.md`;
+    } else {
+      filename = agentConfig?.targetFormat === 'claude_md' 
+        ? 'CLAUDE.md' 
+        : agentConfig?.targetFormat === 'cursor_rules' 
+        ? '.cursorrules' 
+        : agentConfig?.targetFormat === 'windsurf_rules' 
+        ? '.windsurfrules' 
+        : agentConfig?.targetFormat === 'copilot_instructions' 
+        ? 'copilot-instructions.md' 
+        : 'AGENTS.md';
+    }
+
     const blob = new Blob([activeMarkdown], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -90,35 +123,109 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
     URL.revokeObjectURL(url);
   };
 
+  const handleDownloadBoth = () => {
+    // Download PRD
+    const prdFilename = `${(config.name || 'Proyek').replace(/[^a-zA-Z0-9_-]/g, '_')}_PRD.md`;
+    const prdBlob = new Blob([manualPrdMarkdown !== null ? manualPrdMarkdown : generatedPrd], { type: 'text/markdown;charset=utf-8' });
+    const prdUrl = URL.createObjectURL(prdBlob);
+    const prdLink = document.createElement('a');
+    prdLink.href = prdUrl;
+    prdLink.download = prdFilename;
+    document.body.appendChild(prdLink);
+    prdLink.click();
+    document.body.removeChild(prdLink);
+    URL.revokeObjectURL(prdUrl);
+
+    // Download AGENTS.md
+    if (agentConfig) {
+      const agentFilename = agentConfig.targetFormat === 'claude_md' 
+        ? 'CLAUDE.md' 
+        : agentConfig.targetFormat === 'cursor_rules' 
+        ? '.cursorrules' 
+        : agentConfig.targetFormat === 'windsurf_rules' 
+        ? '.windsurfrules' 
+        : agentConfig.targetFormat === 'copilot_instructions' 
+        ? 'copilot-instructions.md' 
+        : 'AGENTS.md';
+
+      setTimeout(() => {
+        const agentBlob = new Blob([manualAgentMarkdown !== null ? manualAgentMarkdown : generatedAgent], { type: 'text/markdown;charset=utf-8' });
+        const agentUrl = URL.createObjectURL(agentBlob);
+        const agentLink = document.createElement('a');
+        agentLink.href = agentUrl;
+        agentLink.download = agentFilename;
+        document.body.appendChild(agentLink);
+        agentLink.click();
+        document.body.removeChild(agentLink);
+        URL.revokeObjectURL(agentUrl);
+      }, 200);
+    }
+  };
+
   const content = (
     <div className="flex flex-col h-full bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xl">
-      {/* Top Header */}
-      <div className="flex items-center justify-between px-5 py-3.5 bg-gray-50/80 border-b border-gray-200 gap-3">
-        <div className="flex items-center gap-1.5 p-1 bg-gray-200/60 rounded-xl text-xs font-semibold">
-          <button
-            type="button"
-            onClick={() => setActiveTab('preview')}
-            className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer ${
-              activeTab === 'preview'
-                ? 'bg-white text-gray-900 shadow-2xs font-bold'
-                : 'text-gray-600 hover:text-black'
-            }`}
-          >
-            <FileText className="w-3.5 h-3.5 text-indigo-600" />
-            <span>Dokumen PRD</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('raw')}
-            className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer ${
-              activeTab === 'raw'
-                ? 'bg-white text-gray-900 shadow-2xs font-bold'
-                : 'text-gray-600 hover:text-black'
-            }`}
-          >
-            <Code className="w-3.5 h-3.5 text-indigo-600" />
-            <span>Markdown Mentah</span>
-          </button>
+      {/* Top Header Bar */}
+      <div className="flex flex-wrap items-center justify-between px-5 py-3 bg-gray-50/90 border-b border-gray-200 gap-3">
+        {/* Document Selector & Render mode */}
+        <div className="flex items-center gap-2">
+          {/* Document Switcher: PRD vs AGENTS.md */}
+          <div className="flex items-center p-0.5 bg-gray-200/70 rounded-lg text-xs font-bold">
+            <button
+              type="button"
+              onClick={() => setSelectedDoc('prd')}
+              className={`px-3 py-1.5 rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
+                selectedDoc === 'prd'
+                  ? 'bg-white text-indigo-700 shadow-2xs'
+                  : 'text-gray-600 hover:text-black'
+              }`}
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>PRD.md</span>
+            </button>
+
+            {agentConfig && (
+              <button
+                type="button"
+                onClick={() => setSelectedDoc('agent')}
+                className={`px-3 py-1.5 rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
+                  selectedDoc === 'agent'
+                    ? 'bg-white text-indigo-700 shadow-2xs'
+                    : 'text-gray-600 hover:text-black'
+                }`}
+              >
+                <Bot className="w-3.5 h-3.5" />
+                <span>AGENTS.md</span>
+              </button>
+            )}
+          </div>
+
+          <div className="h-4 w-px bg-gray-300 hidden sm:block" />
+
+          {/* Render Mode: Preview vs Raw */}
+          <div className="flex items-center p-0.5 bg-gray-100 rounded-lg text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => setActiveTab('preview')}
+              className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                activeTab === 'preview'
+                  ? 'bg-white text-gray-900 shadow-2xs font-bold'
+                  : 'text-gray-500 hover:text-black'
+              }`}
+            >
+              Preview
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('raw')}
+              className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                activeTab === 'raw'
+                  ? 'bg-white text-gray-900 shadow-2xs font-bold'
+                  : 'text-gray-500 hover:text-black'
+              }`}
+            >
+              Raw
+            </button>
+          </div>
         </div>
 
         {/* Action buttons */}
@@ -134,33 +241,43 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
             <ListTree className="w-4 h-4" />
           </button>
 
+          {agentConfig && (
+            <button
+              type="button"
+              onClick={handleDownloadBoth}
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 h-8 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 rounded-lg transition-colors cursor-pointer shadow-2xs"
+              title="Unduh PRD.md dan AGENTS.md sekaligus"
+            >
+              <FolderArchive className="w-3.5 h-3.5" />
+              <span>Unduh Bundle (PRD + Agent)</span>
+            </button>
+          )}
+
           <button
             type="button"
-            onClick={handleDownload}
-            className="inline-flex items-center gap-1.5 px-3.5 h-9 text-xs font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer shadow-2xs"
+            onClick={handleDownloadActive}
+            className="inline-flex items-center gap-1.5 px-3 h-8 text-xs font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer shadow-2xs"
           >
             <Download className="w-3.5 h-3.5 text-gray-500" />
-            <span className="hidden sm:inline">Unduh .md</span>
+            <span>Unduh {selectedDoc === 'prd' ? '.md' : 'Agent'}</span>
           </button>
 
           <button
             type="button"
             onClick={handleCopy}
-            className={`inline-flex items-center gap-1.5 px-4 h-9 text-xs font-semibold rounded-lg transition-all cursor-pointer shadow-xs active:scale-98 ${
-              copied
-                ? 'bg-emerald-600 text-white'
-                : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            className={`inline-flex items-center gap-1.5 px-3.5 h-8 text-xs font-semibold rounded-lg transition-all cursor-pointer shadow-xs active:scale-98 text-white ${
+              copied ? 'bg-emerald-600' : 'bg-indigo-600 hover:bg-indigo-700'
             }`}
           >
-            {copied ? <Check className="w-4 h-4 stroke-[3]" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copied ? 'Tersalin ke Clipboard!' : 'Salin PRD'}</span>
+            {copied ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : <Copy className="w-3.5 h-3.5" />}
+            <span>{copied ? 'Tersalin!' : `Salin ${selectedDoc === 'prd' ? 'PRD' : 'AGENTS.md'}`}</span>
           </button>
 
           {isModal && onClose && (
             <button
               type="button"
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              className="p-1.5 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -168,12 +285,12 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <div className="relative flex-1 flex overflow-hidden">
         {showToc && (
           <aside className="w-64 border-r border-gray-200 bg-gray-50/50 p-4 overflow-y-auto custom-scrollbar text-xs shrink-0">
             <span className="text-[11px] font-mono uppercase tracking-wider text-gray-500 font-bold block mb-3">
-              Daftar Bagian PRD
+              Daftar Bagian ({selectedDoc.toUpperCase()})
             </span>
             <nav className="space-y-1">
               {headings.map((h, i) => (
@@ -223,9 +340,15 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
           ) : (
             <textarea
               value={activeMarkdown}
-              onChange={(e) => setManualMarkdown(e.target.value)}
+              onChange={(e) => {
+                if (selectedDoc === 'prd') {
+                  setManualPrdMarkdown(e.target.value);
+                } else {
+                  setManualAgentMarkdown(e.target.value);
+                }
+              }}
               className="w-full h-[650px] p-4 font-mono text-xs text-gray-900 bg-gray-50 border border-gray-200 rounded-xl focus:border-indigo-600 focus:bg-white focus:outline-none resize-y leading-relaxed"
-              placeholder="Markdown PRD..."
+              placeholder="Markdown content..."
               spellCheck={false}
             />
           )}
